@@ -3,7 +3,7 @@ import torch.nn as nn
 from sklearn.preprocessing import RobustScaler
 from make_dataset import create_dataset
 from dataset_finishing import dataset_finish
-from configs import wait, patience, best_val_loss, num_epochs, add_training_date_start, add_training_data_end, best_model_path, best_model_path_end
+from configs import wait, patience, best_val_loss, num_epochs, add_training_date_start, add_training_data_end, best_model_path, best_model_path_end, ticker
 import yfinance as yf
 import numpy as np
 from model import Model
@@ -13,8 +13,6 @@ from regular import regular_training
 exact_model = input("Search for the exact model date: ")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-
-ticker = "TSLA"
 
 data = yf.download(ticker, start=add_training_date_start, end=add_training_data_end, auto_adjust=True) # logiko
 features = data[["Open", "High", "Low", "Close", "Volume"]].values # bazoume allo ena dim gia sostotita stis kontines times. Γιατί; Οι scaler & NN θέλουν 2D inputs.
