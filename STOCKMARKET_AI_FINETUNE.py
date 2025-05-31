@@ -46,7 +46,7 @@ optimizer = torch.optim.Adam(model.mlp.parameters(), lr=epsilon)
 #checkpoint_path = os.path.join(best_model_path)
 checkpoint = torch.load(best_model_path + exact_model + best_model_path_end)
 model.load_state_dict(checkpoint['model_state_dict'])
-optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+#optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
 model = model.to(device)
 train_loader, val_loader, loader = dataset_finish(X, y)
