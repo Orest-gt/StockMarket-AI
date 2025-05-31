@@ -7,7 +7,7 @@ from regular import regular_training
 from model import Model
 from make_dataset import create_dataset
 from dataset_finishing import dataset_finish
-from configs import num_epochs, ticker, wait, patience, best_val_loss, main_training_date_start, main_training_date_end
+from configs import num_epochs, ticker, patience, best_val_loss, main_training_date_start, main_training_date_end, live_training, epsilon
 
 debugging_print = False
 on_tpu = False
@@ -46,15 +46,15 @@ y = torch.tensor(y, dtype=torch.float32).unsqueeze(1) # add 2d dim
 model = Model()
 model = model.to(device)
 loss_tool = nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(model.parameters(), lr=epsilon)
 train_loader, val_loader, loader = dataset_finish(X, y)
 
-def train(live=False):
+def train(live: bool):
     if live:
-        live_graph_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, wait, patience)
+        live_graph_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, patience)
     else:
-        regular_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, wait, patience)
+        regular_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, patience)
 
 
 if __name__ == "__main__":
-    train(False)
+    train(live_training)

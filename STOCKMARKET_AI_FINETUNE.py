@@ -3,7 +3,7 @@ import torch.nn as nn
 from sklearn.preprocessing import RobustScaler
 from make_dataset import create_dataset
 from dataset_finishing import dataset_finish
-from configs import wait, patience, best_val_loss, num_epochs, add_training_date_start, add_training_data_end, best_model_path, best_model_path_end, ticker
+from configs import patience, best_val_loss, num_epochs, add_training_date_start, add_training_data_end, best_model_path, best_model_path_end, ticker, live_training, epsilon
 import yfinance as yf
 import numpy as np
 from model import Model
@@ -37,8 +37,11 @@ X, y = X.to(device), y.to(device)
 model = Model()
 model = model.to(device)
 
+for param in model.lstm.parameters():
+    param.requires_grad = False
+
 loss_tool = nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(model.mlp.parameters(), lr=epsilon)
 
 #checkpoint_path = os.path.join(best_model_path)
 checkpoint = torch.load(best_model_path + exact_model + best_model_path_end)
@@ -48,14 +51,14 @@ optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 model = model.to(device)
 train_loader, val_loader, loader = dataset_finish(X, y)
 
-def train(live=True):
+def train(live: bool):
     if live:
-        live_graph_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, wait, patience)
+        live_graph_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, patience)
     else:
-        regular_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, wait, patience)
+        regular_training(X, y, inverse_transform_close_only, model, num_epochs, loader, device, loss_tool, optimizer, val_loader, best_val_loss, patience)
 
 if __name__ == "__main__":
-    train()
+    train(live_training)
 
 # FINE TUNER
 # Αυτό είναι αυτός ο κώδικας

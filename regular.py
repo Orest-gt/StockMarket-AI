@@ -10,7 +10,8 @@ from datetime import datetime
 now = datetime.now()
 now = now.strftime("%Y-%m-%d-%H-%M")
 
-def regular_training(X: Tensor, y: Tensor, inverse_transform_close_only, model: Model, num_epochs: int, loader, device: str, loss_tool, optimizer: torch.optim.Adam, val_loader, best_val_loss: float, wait: int, patience: int) -> None:
+def regular_training(X: Tensor, y: Tensor, inverse_transform_close_only, model: Model, num_epochs: int, loader, device: str, loss_tool, optimizer: torch.optim.Adam, val_loader, best_val_loss: float, patience: int) -> None:
+    wait = 0
     for epoch in tqdm(range(num_epochs), desc="Training"):
         model.train()
         for batch_X, batch_y in loader:

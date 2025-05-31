@@ -12,7 +12,8 @@ now = now.strftime("%Y-%m-%d-%H-%M")
 #folder_path = best_model_path + now
 #os.makedirs(folder_path, exist_ok=True)
 
-def live_graph_training(X: Tensor, y: Tensor, inverse_transform_close_only, model: Model, num_epochs: int, loader, device: str, loss_tool, optimizer, val_loader, best_val_loss: float, wait: int, patience: int) -> None:
+def live_graph_training(X: Tensor, y: Tensor, inverse_transform_close_only, model: Model, num_epochs: int, loader, device: str, loss_tool, optimizer, val_loader, best_val_loss: float, patience: int) -> None:
+    wait = 0
     plt.ion()
     fig, ax = plt.subplots(figsize=(12, 6))
     x = np.arange(len(y))
