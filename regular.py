@@ -55,7 +55,7 @@ def regular_training(X: Tensor, y: Tensor, inverse_transform_close_only, model: 
     with torch.no_grad():
         pred = model(X).cpu().numpy()
 
-    real_ones = inverse_transform_close_only(y.view(-1, 1))
+    real_ones = inverse_transform_close_only(y.cpu().view(-1, 1))
     predicted_prices = inverse_transform_close_only(pred)
 
     plt.figure(figsize=(12, 6))
