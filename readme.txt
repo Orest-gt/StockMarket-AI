@@ -1,3 +1,11 @@
+This project is aimed to give us the best possible stock purchases
+
+Make sure you have python 3.12 installed properly
+
+Just do:
+pip install yfinance torch scikit-learn matplotlib numpy tqdm
+
+
 AAPL – Apple
 GOOGL – Alphabet (Google)
 MSFT – Microsoft
